@@ -1,25 +1,37 @@
+import type { DraftTask, Task } from "../types"
+
 export type TaskActions = 
-    {type: 'add-task', payload: {task: string}} |
+    {type: 'add-task', payload: {task: DraftTask}} |
     {type: 'show-modal'} |
-    {type: 'close-modal'}
+    {type: 'close-modal'} 
+    
 
 export type TaskState = {
-    task: string
+    tasks: Task[]
     modal: boolean
 }
 export const initialState : TaskState = {
-    task: '',
+    tasks: [],
     modal: false
 }
 
+const createTask = (draftTask: DraftTask) : Task => {
+    return {
+        ...draftTask,
+        id: crypto.randomUUID()
+    }
+}
+
 export const taskReducer = (
-    state: TaskState,
+    state: TaskState = initialState,
     action: TaskActions
 ): TaskState => {
     if(action.type === 'add-task') {
+        const task = createTask(action.payload.task);
         return {
             ...state,
-            task: action.payload.task
+            tasks: [...state.tasks, task],
+            modal: false
         }
     }
     
