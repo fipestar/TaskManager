@@ -1,12 +1,9 @@
-import { useMemo } from "react"
-import TaskForm from "./components/TaskForm"
-import { useTask } from "./hooks/useTask"
+
 import TaskTracker from "./components/TaskTracker"
+import TaskModal from "./components/TaskModal"
 
 function App() {
 
-  const { state } = useTask()
-  const isValidTask = useMemo(() => state.task.trim().length > 0, [state.task])
   return (
     <>
       <header className="bg-linear-to-r from-blue-600 to-purple-600 text-white py-6 px-8 shadow-lg">
@@ -16,8 +13,13 @@ function App() {
       </header>
 
       <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-        {isValidTask ? <TaskTracker /> : <TaskForm />}
+        <TaskTracker />
       </div>
+      
+        <main className="max-w-4xl mx-auto mt-10">
+          <TaskModal />
+        </main>
+
     </>
   )
 }

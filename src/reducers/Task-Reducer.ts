@@ -1,11 +1,15 @@
 export type TaskActions = 
-    {type: 'add-task', payload: {task: string}}
+    {type: 'add-task', payload: {task: string}} |
+    {type: 'show-modal'} |
+    {type: 'close-modal'}
 
 export type TaskState = {
     task: string
+    modal: boolean
 }
 export const initialState : TaskState = {
-    task: ''
+    task: '',
+    modal: false
 }
 
 export const taskReducer = (
@@ -18,5 +22,20 @@ export const taskReducer = (
             task: action.payload.task
         }
     }
+    
+    if(action.type === 'show-modal') {
+        return {
+            ...state,
+            modal: true
+        }
+    }
+    
+    if(action.type === 'close-modal') {
+        return {
+            ...state,
+            modal: false
+        }
+    }
+    
     return state
 }
