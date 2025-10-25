@@ -1,6 +1,7 @@
 
 import TaskTracker from "./components/TaskTracker"
 import TaskModal from "./components/TaskModal"
+import TaskList from "./components/TaskList"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
       </div>
       
         <main className="max-w-4xl mx-auto mt-10">
+          <TaskList />
           <TaskModal />
         </main>
 
