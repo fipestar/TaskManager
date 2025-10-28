@@ -3,7 +3,8 @@ import type { DraftTask, Task } from "../types"
 export type TaskActions = 
     {type: 'add-task', payload: {task: DraftTask}} |
     {type: 'show-modal'} |
-    {type: 'close-modal'} 
+    {type: 'close-modal'} |
+    {type: 'remove-task', payload: {id: Task['id']}}
     
 
 export type TaskState = {
@@ -46,6 +47,12 @@ export const taskReducer = (
         return {
             ...state,
             modal: false
+        }
+    }
+    if(action.type === 'remove-task') {
+        return {
+            ...state,
+            tasks: state.tasks.filter( expense => expense.id !== action.payload.id)
         }
     }
     

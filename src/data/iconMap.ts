@@ -18,12 +18,12 @@ export const iconMap = {
   personal: Home,
 
   // Prioridades
-  high: Flame,
-  medium: Flag,
-  low: Clock,
+  flame: Flame,
+  flag: Flag,
+  clock: Clock,
 
   // Estados
-  todo: Circle,
-  in_progress: Loader,
-  done: CheckCircle,
+  circle: Circle,
+  loader: Loader,
+  "check-circle": CheckCircle,
 };

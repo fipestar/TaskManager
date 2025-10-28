@@ -45,13 +45,14 @@ export default function TaskTracker() {
           Resetear tareas
         </button>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-          <StatDisplay label="Totales" value={12} />
-          <StatDisplay label="En Progreso" value={4} color="text-yellow-500" />
-          <StatDisplay label="Completadas" value={5} color="text-green-600" />
-        </div>
+        <div className="flex flex-col gap-4 items-center">
+        <StatDisplay label="Totales" value={12} color="text-blue-600" />
+        <StatDisplay label="En Progreso" value={4} color="text-yellow-500" />
+        <StatDisplay label="Completadas" value={7} color="text-green-600" />
+        <StatDisplay label="Pendientes" value={1} color="text-red-600" />
+</div>
 
-        <StatDisplay label="Pendientes" value={3} color="text-red-600" />
+
 
       </div>
     </div>
