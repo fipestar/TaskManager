@@ -10,13 +10,11 @@ import { useTask } from "../hooks/useTask"
 
 type TaskDetailProps = {
   task: Task
-  onEdit: (task: Task) => void
-  onDelete: (taskId: string) => void
 }
 
 
 
-export default function TaskDetail({ task, onEdit }: TaskDetailProps) {
+export default function TaskDetail({ task }: TaskDetailProps) {
 
   const { dispatch } = useTask();
 
@@ -30,6 +28,10 @@ export default function TaskDetail({ task, onEdit }: TaskDetailProps) {
 
   const handleDelete = () => {
     dispatch({type: 'remove-task', payload: {id: task.id!}})
+  }
+
+  const handleEdit = () => {
+    dispatch({type: 'get-task-by-id', payload: {id: task.id!}})
   }
 
   return (
@@ -52,7 +54,7 @@ export default function TaskDetail({ task, onEdit }: TaskDetailProps) {
       </div>
 
       <TaskActions 
-        onEdit={() => onEdit(task)}
+        onEdit={handleEdit}
         onDelete={handleDelete}
       />
     </div>

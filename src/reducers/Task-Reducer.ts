@@ -4,16 +4,19 @@ export type TaskActions =
     {type: 'add-task', payload: {task: DraftTask}} |
     {type: 'show-modal'} |
     {type: 'close-modal'} |
-    {type: 'remove-task', payload: {id: Task['id']}}
+    {type: 'remove-task', payload: {id: Task['id']}} |
+    {type: 'get-task-by-id', payload: {id: Task['id']}}
     
 
 export type TaskState = {
     tasks: Task[]
     modal: boolean
+    editingId : Task['id']
 }
 export const initialState : TaskState = {
     tasks: [],
-    modal: false
+    modal: false,
+    editingId: ''
 }
 
 const createTask = (draftTask: DraftTask) : Task => {
@@ -53,6 +56,13 @@ export const taskReducer = (
         return {
             ...state,
             tasks: state.tasks.filter( expense => expense.id !== action.payload.id)
+        }
+    }
+    if(action.type === 'get-task-by-id'){
+        return {
+            ...state,
+            editingId: action.payload.id,
+            modal: true
         }
     }
     
