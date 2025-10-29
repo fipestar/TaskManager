@@ -5,7 +5,8 @@ export type TaskActions =
     {type: 'show-modal'} |
     {type: 'close-modal'} |
     {type: 'remove-task', payload: {id: Task['id']}} |
-    {type: 'get-task-by-id', payload: {id: Task['id']}}
+    {type: 'get-task-by-id', payload: {id: Task['id']}} |
+    {type: 'update-task', payload: {task: Task}}
     
 
 export type TaskState = {
@@ -13,8 +14,13 @@ export type TaskState = {
     modal: boolean
     editingId : Task['id']
 }
+
+const localStorageTasks = () : Task[] => {
+    const tasks = localStorage.getItem('tasks')
+    return tasks ? JSON.parse(tasks) : []
+}
 export const initialState : TaskState = {
-    tasks: [],
+    tasks: localStorageTasks(),
     modal: false,
     editingId: ''
 }
@@ -49,7 +55,8 @@ export const taskReducer = (
     if(action.type === 'close-modal') {
         return {
             ...state,
-            modal: false
+            modal: false,
+            editingId: ''
         }
     }
     if(action.type === 'remove-task') {
@@ -63,6 +70,16 @@ export const taskReducer = (
             ...state,
             editingId: action.payload.id,
             modal: true
+        }
+    }
+    if(action.type === 'update-task'){
+      const updatedTask = action.payload?.task;
+      if(!updatedTask) return state;  
+        return{
+            ...state,
+            tasks: state.tasks.map(task => task.id === updatedTask.id ? updatedTask : task),
+            editingId: '',
+            modal: false
         }
     }
     

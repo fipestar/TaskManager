@@ -3,7 +3,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import { es } from 'date-fns/locale/es';
 import 'react-calendar/dist/Calendar.css'
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import type { DraftTask } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import { useTask } from "../hooks/useTask";
@@ -23,7 +23,16 @@ export default function TaskForm() {
   })
 
   const [error, setError] = useState("");
-  const {dispatch} = useTask();
+  const {dispatch, state} = useTask();
+
+  useEffect(() => {
+    if(state.editingId != null) {
+      const editingTask = state.tasks.find(task => task.id === state.editingId);
+      if(editingTask) {
+        setTask(editingTask);
+      } 
+    }
+  }, [state.editingId, state.tasks, setTask])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setTask({
@@ -45,7 +54,12 @@ export default function TaskForm() {
       setError("Todos los campos son obligatorios");
       return;
     }
-    dispatch({type: 'add-task', payload: {task}})
+    
+    if(state.editingId) {
+      dispatch({type: 'update-task', payload: {task: {id: state.editingId, ...task}}});
+    } else {
+      dispatch({type: 'add-task', payload: {task}});
+    }
 
     setTask({
       taskName: "",
@@ -59,7 +73,7 @@ export default function TaskForm() {
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="uppercase text-center text-2xl font-black border-b-4 border-blue-600 pb-2 mb-5">
-        Nueva Tarea
+        {state.editingId ? 'Editar Tarea' : 'Crear Nueva Tarea'}
       </legend>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -180,7 +194,7 @@ export default function TaskForm() {
 <input 
   type="submit"
   className="bg-blue-600 w-full p-3 mt-4 text-white uppercase font-bold rounded-lg hover:bg-blue-700 cursor-pointer transition-colors"
-  value="Guardar Tarea" 
+  value={state.editingId ? 'Guardar Cambios' : 'Agregar Tarea'}
 />
     </form>
   );

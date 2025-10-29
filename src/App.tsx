@@ -1,9 +1,25 @@
-
 import TaskTracker from "./components/TaskTracker"
 import TaskModal from "./components/TaskModal"
 import TaskList from "./components/TaskList"
+import { useEffect } from "react"
+import { useTask } from "./hooks/useTask";
 
 function App() {
+const {state} = useTask();
+
+  useEffect(() => {
+    try {
+      // Convertir Date a ISO para evitar perder información sobre fecha
+      const serializable = state.tasks.map(t => ({
+        ...t,
+        date: t.date instanceof Date ? t.date.toISOString() : t.date
+      }));
+      localStorage.setItem('tasks', JSON.stringify(serializable));
+    } catch (error) {
+      // opcional: manejar/loggear el error (quota, JSON errors, etc.)
+      console.error('No se pudo guardar tasks en localStorage:', error);
+    }
+  }, [state.tasks])
 
   return (
     <>
