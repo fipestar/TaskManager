@@ -71,23 +71,28 @@ export default function TaskForm() {
     })
   }
   return (
-    <form className="space-y-5" onSubmit={handleSubmit}>
-      <legend className="uppercase text-center text-2xl font-black border-b-4 border-blue-600 pb-2 mb-5">
-        {state.editingId ? 'Editar Tarea' : 'Crear Nueva Tarea'}
-      </legend>
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      <div className="text-center border-b-2 border-gray-200 pb-6 mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">
+          {state.editingId ? '✏️ Editar Tarea' : '➕ Nueva Tarea'}
+        </h2>
+        <p className="text-gray-500 text-sm mt-2">
+          {state.editingId ? 'Actualiza la información de tu tarea' : 'Completa los campos para crear una tarea'}
+        </p>
+      </div>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       {/* Nombre de la tarea */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="taskName" className="text-xl">
-          Nombre de la tarea:
+        <label htmlFor="taskName" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+          📝 Nombre de la tarea
         </label>
         <input
           type="text"
           id="taskName"
           placeholder="Ej. Diseñar la interfaz del dashboard"
-          className="bg-slate-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400 placeholder:opacity-60"
+          className="bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400 placeholder:opacity-60 transition-all duration-200 hover:border-gray-300"
           name="taskName"
           value={task.taskName}
           onChange={handleChange}
@@ -96,106 +101,111 @@ export default function TaskForm() {
 
       {/* Descripción */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="description" className="text-xl">
-          Descripción:
+        <label htmlFor="description" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+          📄 Descripción
         </label>
         <textarea
           id="description"
           placeholder="Agrega una breve descripción de la tarea"
-          className="bg-slate-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none placeholder:text-gray-400 placeholder:opacity-60"
+          className="bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder:text-gray-400 placeholder:opacity-60 transition-all duration-200 hover:border-gray-300"
           name="description"
-          rows={3}
+          rows={4}
           value={task.description}
           onChange={handleChange}
         ></textarea>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="project" className="text-xl">
-          Proyecto:
-        </label>
-        <select
-          id="project"
-          name="project"
-          className="bg-slate-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={task.project}
-          onChange={handleChange}
-          
-       >
-          <option value="">-- Seleccione un proyecto --</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </select>
+      {/* Grid de 2 columnas para los selects */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="project" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            📁 Proyecto
+          </label>
+          <select
+            id="project"
+            name="project"
+            className="bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 cursor-pointer"
+            value={task.project}
+            onChange={handleChange}
+         >
+            <option value="">-- Seleccione un proyecto --</option>
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Estado */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="status" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            📌 Estado
+          </label>
+          <select
+            id="status"
+            className="bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 cursor-pointer"
+            name="status"
+            value={task.status}
+            onChange={handleChange}
+          >
+            <option value="">-- Seleccione --</option>
+            {statuses.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Estado */}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="status" className="text-xl">
-          Estado:
-        </label>
-        <select
-          id="status"
-          className="bg-slate-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          name="status"
-          value={task.status}
-          onChange={handleChange}
-        >
-          <option value="">-- Seleccione --</option>
-          {statuses.map((status) => (
-            <option key={status.id} value={status.id}>
-              {status.name}
-            </option>
-          ))}
-        </select>
+      {/* Grid de 2 columnas para prioridad y fecha */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Prioridad */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="priority" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            🔥 Prioridad
+          </label>
+          <select
+            id="priority"
+            className="bg-gray-50 border border-gray-200 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 cursor-pointer"
+            name="priority"
+            value={task.priority}
+            onChange={handleChange}
+         >
+            <option value="">-- Seleccione --</option>
+            {priorities.map((priority) => (
+              <option key={priority.id} value={priority.id}>
+                {priority.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Fecha límite */}
+        <div className="flex flex-col gap-2">
+          <label 
+            htmlFor="dueDate"
+            className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+          >
+            📅 Fecha límite
+          </label>
+          <DatePicker
+            className="bg-gray-50 border border-gray-200 p-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+            locale="es"
+            dateFormat="dd/MM/yyyy"
+            onChange={handleChangeDate}
+            selected={task.date}
+          />
+        </div>
       </div>
 
-      {/* Prioridad */}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="priority" className="text-xl">
-          Prioridad:
-        </label>
-        <select
-          id="priority"
-          className="bg-slate-100 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          name="priority"
-          value={task.priority}
-          onChange={handleChange}
-       >
-          <option value="">-- Seleccione --</option>
-          {priorities.map((priority) => (
-            <option key={priority.id} value={priority.id}>
-              {priority.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="flex flex-col gap-2">
-  <label 
-    htmlFor="dueDate"
-    className="text-xl font-medium text-gray-700"
-
-  >
-    Fecha límite:
-  </label>
-
-  <DatePicker
-    className="bg-slate-100 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-    locale="es"
-    dateFormat="dd/MM/yyyy"
-    onChange={handleChangeDate}
-    selected={task.date}
-  />
-</div>
-
-<input 
-  type="submit"
-  className="bg-blue-600 w-full p-3 mt-4 text-white uppercase font-bold rounded-lg hover:bg-blue-700 cursor-pointer transition-colors"
-  value={state.editingId ? 'Guardar Cambios' : 'Agregar Tarea'}
-/>
+      <button 
+        type="submit"
+        className="bg-linear-to-r from-blue-600 to-indigo-600 w-full p-4 mt-6 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+      >
+        {state.editingId ? '💾 Guardar Cambios' : '✨ Agregar Tarea'}
+      </button>
     </form>
   );
 }

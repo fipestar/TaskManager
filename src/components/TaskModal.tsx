@@ -9,17 +9,19 @@ export default function TaskModal() {
 
   return (
     <>
-      <div className="fixed right-5 bottom-5 flex items-center justify-center">
+      <div className="fixed right-6 bottom-6 z-50 flex items-center justify-center">
         <button
           type="button"
           onClick={() => dispatch({ type: 'show-modal' })}
+          className="group relative"
         >
-          <PlusCircleIcon className='w-16 h-16 text-blue-600 rounded-full hover:text-blue-700 transition-colors' />
+          <div className="absolute inset-0 bg-blue-600 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+          <PlusCircleIcon className='relative w-16 h-16 md:w-20 md:h-20 text-blue-600 rounded-full hover:text-blue-700 hover:scale-110 transition-all duration-200 drop-shadow-2xl' />
         </button>
       </div>
 
       <Transition appear show={state.modal} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => dispatch({ type: 'close-modal' })}>
+        <Dialog as="div" className="relative z-50" onClose={() => dispatch({ type: 'close-modal' })}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -29,7 +31,7 @@ export default function TaskModal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/75" />
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
           </TransitionChild>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -43,7 +45,7 @@ export default function TaskModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogPanel className="w-full max-w-3xl transform overflow-hidden rounded-3xl bg-white p-8 md:p-10 text-left align-middle shadow-2xl transition-all">
                    <DetailForm />
                 </DialogPanel>
               </TransitionChild>

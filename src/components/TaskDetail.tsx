@@ -1,6 +1,5 @@
 import formatDate, { getItemById } from "../helpers"
 import type { Task } from "../types"
-import StatDisplay from "./StatDisplay"
 import { statuses } from "../data/status"
 import { priorities } from "../data/priorities"
 import { projects } from "../data/projects"
@@ -34,29 +33,70 @@ export default function TaskDetail({ task }: TaskDetailProps) {
     dispatch({type: 'get-task-by-id', payload: {id: task.id!}})
   }
 
+  // Colores dinámicos según prioridad
+  const getPriorityColors = () => {
+    if (priority?.name === 'Alta') return 'border-red-200 bg-red-50/50';
+    if (priority?.name === 'Media') return 'border-yellow-200 bg-yellow-50/50';
+    return 'border-blue-200 bg-blue-50/50';
+  };
+
   return (
-    <div className="bg-white shadow-lg p-10 w-full max-w-md rounded-lg border-gray-200 flex gap-5 items-center">
-      <div className="flex gap-3">
-        {ProjectIcon && <ProjectIcon className="w-6 h-6 text-blue-600" />}
-        {PriorityIcon && <PriorityIcon className="w-6 h-6 text-orange-600" />}
-        {StatusIcon && <StatusIcon className="w-6 h-6 text-green-600" />}
-      </div>
+    <div className={`bg-white hover:bg-gray-50 border-l-4 shadow-md hover:shadow-xl p-6 rounded-xl transition-all duration-200 ${getPriorityColors()}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1">
+          {/* Iconos y título */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex gap-2">
+              {ProjectIcon && (
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <ProjectIcon className="w-5 h-5 text-blue-600" />
+                </div>
+              )}
+              {PriorityIcon && (
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <PriorityIcon className="w-5 h-5 text-orange-600" />
+                </div>
+              )}
+              {StatusIcon && (
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <StatusIcon className="w-5 h-5 text-green-600" />
+                </div>
+              )}
+            </div>
+          </div>
 
-      <div>
-        <p className="font-semibold text-lg">{task.taskName}</p>
-        <p className="text-slate-600 text-sm">{formatDate(task.date!.toString())}</p>
-      </div>
+          {/* Título y descripción */}
+          <h3 className="font-bold text-xl text-gray-800 mb-2">{task.taskName}</h3>
+          <p className="text-gray-600 text-sm mb-4">{task.description}</p>
 
-       <div className="flex flex-wrap justify-between mt-2">
-        <StatDisplay label="Estado" value={status?.name || ''} />
-        <StatDisplay label="Prioridad" value={priority?.name || ''} />
-        <StatDisplay label="Proyecto" value={project?.name || ''} />
-      </div>
+          {/* Fecha */}
+          <div className="flex items-center gap-2 text-gray-500 text-sm mb-4">
+            <span>📅</span>
+            <span>{formatDate(task.date!.toString())}</span>
+          </div>
 
-      <TaskActions 
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+          {/* Tags de información */}
+          <div className="flex flex-wrap gap-2">
+            <span className="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">
+              {project?.name || ''}
+            </span>
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
+              {status?.name || ''}
+            </span>
+            <span className="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+              {priority?.name || ''}
+            </span>
+          </div>
+        </div>
+
+        {/* Botones de acción */}
+        <div className="shrink-0">
+          <TaskActions 
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
+      </div>
     </div>
   )
 }

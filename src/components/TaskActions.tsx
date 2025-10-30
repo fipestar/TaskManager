@@ -11,21 +11,21 @@ export default function TaskActions({ onEdit, onDelete }: TaskActionsProps) {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button
-          className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+          className="p-2.5 rounded-xl hover:bg-gray-100 transition-all duration-200 hover:shadow-md"
           aria-label="Opciones de tarea"
         >
-          <MoreVertical className="w-5 h-5 text-slate-600" />
+          <MoreVertical className="w-5 h-5 text-gray-600" />
         </button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="bg-white shadow-xl rounded-lg py-2 w-40 border border-slate-200"
-          sideOffset={6}
+          className="bg-white shadow-2xl rounded-xl py-2 w-44 border border-gray-100 z-50"
+          sideOffset={8}
         >
           <DropdownMenu.Item
             onSelect={onEdit}
-            className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-blue-100 text-slate-700 text-sm"
+            className="flex items-center gap-3 px-4 py-2.5 cursor-pointer hover:bg-blue-50 text-gray-700 text-sm font-medium transition-colors duration-150 rounded-lg mx-1"
           >
             <Edit3 className="w-4 h-4 text-blue-600" />
             Editar
@@ -33,7 +33,7 @@ export default function TaskActions({ onEdit, onDelete }: TaskActionsProps) {
 
           <DropdownMenu.Item
             onSelect={onDelete}
-            className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-pink-100 text-pink-600 text-sm"
+            className="flex items-center gap-3 px-4 py-2.5 cursor-pointer hover:bg-red-50 text-red-600 text-sm font-medium transition-colors duration-150 rounded-lg mx-1"
           >
             <Trash2 className="w-4 h-4" />
             Eliminar
